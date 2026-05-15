@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>F1 2025</title>
+  <title>F1 2026</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,7 +31,6 @@
       padding: 0 20px;
     }
 
-    /* ── Header ── */
     header {
       padding: 36px 0 24px;
       border-bottom: 1px solid var(--border);
@@ -63,10 +62,7 @@
       margin-top: 2px;
     }
 
-    /* ── Next race card ── */
-    .next-wrap {
-      padding: 24px 0 0;
-    }
+    .next-wrap { padding: 24px 0 0; }
 
     .next-card {
       background: var(--card);
@@ -107,11 +103,7 @@
       font-weight: 500;
     }
 
-    .cd {
-      display: flex;
-      align-items: flex-end;
-      gap: 0;
-    }
+    .cd { display: flex; align-items: flex-end; }
 
     .cd-block { text-align: center; min-width: 54px; }
 
@@ -140,10 +132,7 @@
       margin: 0 2px;
     }
 
-    /* ── Race list ── */
-    .sched {
-      padding: 32px 0 72px;
-    }
+    .sched { padding: 32px 0 72px; }
 
     .sec-hd {
       font-size: 10px;
@@ -174,7 +163,6 @@
 
     .row:last-child { border-bottom: none; }
     .row:hover:not(.past) { background: var(--card-hover); }
-
     .row.past { opacity: 0.3; }
 
     .row.is-next {
@@ -241,7 +229,7 @@
     <div class="hd">
       <div class="hd-bar"></div>
       <div>
-        <h1>Formula 1 &middot; 2025</h1>
+        <h1>Formula 1 &middot; 2026</h1>
         <p id="tz-lbl">Loading times&hellip;</p>
       </div>
     </div>
@@ -267,42 +255,38 @@
   </div>
 
   <div class="sched">
-    <div class="sec-hd">2025 Season &mdash; 24 Rounds</div>
+    <div class="sec-hd">2026 Season &mdash; 22 Rounds</div>
     <div class="race-list" id="race-list"></div>
   </div>
 
 </div>
 <script>
 const RACES = [
-  { r:1,  name:'Australian Grand Prix',    circuit:'Albert Park Circuit',                  country:'Australia',             flag:'\u{1F1E6}\u{1F1FA}', date:'2025-03-16T05:00:00Z', sprint:false },
-  { r:2,  name:'Chinese Grand Prix',        circuit:'Shanghai International Circuit',        country:'China',                 flag:'\u{1F1E8}\u{1F1F3}', date:'2025-03-23T07:00:00Z', sprint:true  },
-  { r:3,  name:'Japanese Grand Prix',       circuit:'Suzuka Circuit',                        country:'Japan',                 flag:'\u{1F1EF}\u{1F1F5}', date:'2025-04-06T05:00:00Z', sprint:false },
-  { r:4,  name:'Bahrain Grand Prix',        circuit:'Bahrain International Circuit',         country:'Bahrain',               flag:'\u{1F1E7}\u{1F1ED}', date:'2025-04-13T15:00:00Z', sprint:false },
-  { r:5,  name:'Saudi Arabian Grand Prix',  circuit:'Jeddah Corniche Circuit',               country:'Saudi Arabia',          flag:'\u{1F1F8}\u{1F1E6}', date:'2025-04-20T17:00:00Z', sprint:false },
-  { r:6,  name:'Miami Grand Prix',          circuit:'Miami International Autodrome',         country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-05-04T20:00:00Z', sprint:true  },
-  { r:7,  name:'Emilia Romagna Grand Prix', circuit:'Autodromo Enzo e Dino Ferrari',         country:'Italy',                 flag:'\u{1F1EE}\u{1F1F9}', date:'2025-05-18T13:00:00Z', sprint:false },
-  { r:8,  name:'Monaco Grand Prix',         circuit:'Circuit de Monaco',                     country:'Monaco',                flag:'\u{1F1F2}\u{1F1E8}', date:'2025-05-25T13:00:00Z', sprint:false },
-  { r:9,  name:'Spanish Grand Prix',        circuit:'Circuit de Barcelona-Catalunya',        country:'Spain',                 flag:'\u{1F1EA}\u{1F1F8}', date:'2025-06-01T13:00:00Z', sprint:false },
-  { r:10, name:'Canadian Grand Prix',       circuit:'Circuit Gilles Villeneuve',             country:'Canada',                flag:'\u{1F1E8}\u{1F1E6}', date:'2025-06-15T18:00:00Z', sprint:false },
-  { r:11, name:'Austrian Grand Prix',       circuit:'Red Bull Ring',                         country:'Austria',               flag:'\u{1F1E6}\u{1F1F9}', date:'2025-06-29T13:00:00Z', sprint:false },
-  { r:12, name:'British Grand Prix',        circuit:'Silverstone Circuit',                   country:'United Kingdom',        flag:'\u{1F1EC}\u{1F1E7}', date:'2025-07-06T14:00:00Z', sprint:false },
-  { r:13, name:'Belgian Grand Prix',        circuit:'Circuit de Spa-Francorchamps',          country:'Belgium',               flag:'\u{1F1E7}\u{1F1EA}', date:'2025-07-27T13:00:00Z', sprint:true  },
-  { r:14, name:'Hungarian Grand Prix',      circuit:'Hungaroring',                           country:'Hungary',               flag:'\u{1F1ED}\u{1F1FA}', date:'2025-08-03T13:00:00Z', sprint:false },
-  { r:15, name:'Dutch Grand Prix',          circuit:'Circuit Zandvoort',                     country:'Netherlands',           flag:'\u{1F1F3}\u{1F1F1}', date:'2025-08-31T13:00:00Z', sprint:false },
-  { r:16, name:'Italian Grand Prix',        circuit:'Autodromo Nazionale Monza',             country:'Italy',                 flag:'\u{1F1EE}\u{1F1F9}', date:'2025-09-07T13:00:00Z', sprint:false },
-  { r:17, name:'Azerbaijan Grand Prix',     circuit:'Baku City Circuit',                     country:'Azerbaijan',            flag:'\u{1F1E6}\u{1F1FF}', date:'2025-09-21T11:00:00Z', sprint:false },
-  { r:18, name:'Singapore Grand Prix',      circuit:'Marina Bay Street Circuit',             country:'Singapore',             flag:'\u{1F1F8}\u{1F1EC}', date:'2025-10-05T08:00:00Z', sprint:false },
-  { r:19, name:'United States Grand Prix',  circuit:'Circuit of the Americas',               country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-10-19T19:00:00Z', sprint:true  },
-  { r:20, name:'Mexico City Grand Prix',    circuit:'Autódromo Hermanos Rodríguez',          country:'Mexico',                flag:'\u{1F1F2}\u{1F1FD}', date:'2025-10-26T20:00:00Z', sprint:false },
-  { r:21, name:'São Paulo Grand Prix',      circuit:'Autódromo José Carlos Pace',            country:'Brazil',                flag:'\u{1F1E7}\u{1F1F7}', date:'2025-11-09T17:00:00Z', sprint:true  },
-  { r:22, name:'Las Vegas Grand Prix',      circuit:'Las Vegas Strip Circuit',               country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-11-22T06:00:00Z', sprint:false },
-  { r:23, name:'Qatar Grand Prix',          circuit:'Lusail International Circuit',          country:'Qatar',                 flag:'\u{1F1F6}\u{1F1E6}', date:'2025-11-30T13:00:00Z', sprint:true  },
-  { r:24, name:'Abu Dhabi Grand Prix',      circuit:'Yas Marina Circuit',                    country:'United Arab Emirates',  flag:'\u{1F1E6}\u{1F1EA}', date:'2025-12-07T13:00:00Z', sprint:false },
+  { r:1,  name:'Australian Grand Prix',         circuit:'Albert Park Circuit',             country:'Australia',            flag:'\u{1F1E6}\u{1F1FA}', date:'2026-03-08T05:00:00Z', sprint:false },
+  { r:2,  name:'Chinese Grand Prix',             circuit:'Shanghai International Circuit',  country:'China',                flag:'\u{1F1E8}\u{1F1F3}', date:'2026-03-15T07:00:00Z', sprint:true  },
+  { r:3,  name:'Japanese Grand Prix',            circuit:'Suzuka Circuit',                  country:'Japan',                flag:'\u{1F1EF}\u{1F1F5}', date:'2026-03-29T05:00:00Z', sprint:false },
+  { r:4,  name:'Miami Grand Prix',               circuit:'Miami International Autodrome',   country:'United States',        flag:'\u{1F1FA}\u{1F1F8}', date:'2026-05-03T20:00:00Z', sprint:true  },
+  { r:5,  name:'Canadian Grand Prix',            circuit:'Circuit Gilles Villeneuve',       country:'Canada',               flag:'\u{1F1E8}\u{1F1E6}', date:'2026-05-24T18:00:00Z', sprint:true  },
+  { r:6,  name:'Monaco Grand Prix',              circuit:'Circuit de Monaco',               country:'Monaco',               flag:'\u{1F1F2}\u{1F1E8}', date:'2026-06-07T13:00:00Z', sprint:false },
+  { r:7,  name:'Barcelona-Catalunya Grand Prix', circuit:'Circuit de Barcelona-Catalunya',  country:'Spain',                flag:'\u{1F1EA}\u{1F1F8}', date:'2026-06-14T13:00:00Z', sprint:false },
+  { r:8,  name:'Austrian Grand Prix',            circuit:'Red Bull Ring',                   country:'Austria',              flag:'\u{1F1E6}\u{1F1F9}', date:'2026-06-28T13:00:00Z', sprint:false },
+  { r:9,  name:'British Grand Prix',             circuit:'Silverstone Circuit',             country:'United Kingdom',       flag:'\u{1F1EC}\u{1F1E7}', date:'2026-07-05T14:00:00Z', sprint:true  },
+  { r:10, name:'Belgian Grand Prix',             circuit:'Circuit de Spa-Francorchamps',    country:'Belgium',              flag:'\u{1F1E7}\u{1F1EA}', date:'2026-07-19T13:00:00Z', sprint:false },
+  { r:11, name:'Hungarian Grand Prix',           circuit:'Hungaroring',                     country:'Hungary',              flag:'\u{1F1ED}\u{1F1FA}', date:'2026-07-26T13:00:00Z', sprint:false },
+  { r:12, name:'Dutch Grand Prix',               circuit:'Circuit Zandvoort',               country:'Netherlands',          flag:'\u{1F1F3}\u{1F1F1}', date:'2026-08-23T13:00:00Z', sprint:true  },
+  { r:13, name:'Italian Grand Prix',             circuit:'Autodromo Nazionale Monza',       country:'Italy',                flag:'\u{1F1EE}\u{1F1F9}', date:'2026-09-06T13:00:00Z', sprint:false },
+  { r:14, name:'Spanish Grand Prix',             circuit:'Madrid Street Circuit',           country:'Spain',                flag:'\u{1F1EA}\u{1F1F8}', date:'2026-09-13T13:00:00Z', sprint:false },
+  { r:15, name:'Azerbaijan Grand Prix',          circuit:'Baku City Circuit',               country:'Azerbaijan',           flag:'\u{1F1E6}\u{1F1FF}', date:'2026-09-27T11:00:00Z', sprint:false },
+  { r:16, name:'Singapore Grand Prix',           circuit:'Marina Bay Street Circuit',       country:'Singapore',            flag:'\u{1F1F8}\u{1F1EC}', date:'2026-10-11T08:00:00Z', sprint:true  },
+  { r:17, name:'United States Grand Prix',       circuit:'Circuit of the Americas',         country:'United States',        flag:'\u{1F1FA}\u{1F1F8}', date:'2026-10-18T20:00:00Z', sprint:false },
+  { r:18, name:'Mexico City Grand Prix',         circuit:'Autódromo Hermanos Rodríguez', country:'Mexico',         flag:'\u{1F1F2}\u{1F1FD}', date:'2026-10-25T20:00:00Z', sprint:false },
+  { r:19, name:'São Paulo Grand Prix',      circuit:'Autódromo José Carlos Pace',  country:'Brazil',          flag:'\u{1F1E7}\u{1F1F7}', date:'2026-11-08T17:00:00Z', sprint:false },
+  { r:20, name:'Las Vegas Grand Prix',           circuit:'Las Vegas Strip Circuit',         country:'United States',        flag:'\u{1F1FA}\u{1F1F8}', date:'2026-11-22T06:00:00Z', sprint:false },
+  { r:21, name:'Qatar Grand Prix',               circuit:'Lusail International Circuit',    country:'Qatar',                flag:'\u{1F1F6}\u{1F1E6}', date:'2026-11-29T13:00:00Z', sprint:false },
+  { r:22, name:'Abu Dhabi Grand Prix',           circuit:'Yas Marina Circuit',              country:'United Arab Emirates', flag:'\u{1F1E6}\u{1F1EA}', date:'2026-12-06T13:00:00Z', sprint:false },
 ];
 
 const now = new Date();
-
-// Timezone label
 const off = -now.getTimezoneOffset();
 const sign = off >= 0 ? '+' : '-';
 const hh = String(Math.floor(Math.abs(off)/60)).padStart(2,'0');
@@ -317,8 +301,8 @@ function fmtTime(iso) {
 }
 function fmtFull(iso) {
   const d = new Date(iso);
-  return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'}) + ' · ' +
-         d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'}) +
+         ' · ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 }
 
 const nextIdx = RACES.findIndex(race => new Date(race.date) > now);
