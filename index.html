@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1 2025</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #E10600;
+      --bg: #0d0d0d;
+      --card: #141414;
+      --card-hover: #1c1c1c;
+      --border: #1f1f1f;
+      --text: #ffffff;
+      --muted: #555;
+      --dim: #2a2a2a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 36px 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hd {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hd-bar {
+      width: 3px;
+      height: 26px;
+      background: var(--red);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .hd h1 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .hd p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Next race card ── */
+    .next-wrap {
+      padding: 24px 0 0;
+    }
+
+    .next-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--red);
+      border-radius: 10px;
+      padding: 20px 22px 22px;
+    }
+
+    .next-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .next-flag { font-size: 26px; margin-bottom: 6px; }
+
+    .next-name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 3px;
+    }
+
+    .next-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .next-time {
+      font-size: 13px;
+      color: #bbb;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .cd {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+    }
+
+    .cd-block { text-align: center; min-width: 54px; }
+
+    .cd-num {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cd-lbl {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    .cd-sep {
+      font-size: 26px;
+      color: var(--dim);
+      font-weight: 300;
+      line-height: 1;
+      padding-bottom: 16px;
+      margin: 0 2px;
+    }
+
+    /* ── Race list ── */
+    .sched {
+      padding: 32px 0 72px;
+    }
+
+    .sec-hd {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding-left: 2px;
+    }
+
+    .race-list {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 22px 26px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+
+    .row:last-child { border-bottom: none; }
+    .row:hover:not(.past) { background: var(--card-hover); }
+
+    .row.past { opacity: 0.3; }
+
+    .row.is-next {
+      background: #160909;
+      border-left: 2px solid var(--red);
+      padding-left: 12px;
+    }
+
+    .r-num {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .r-flag { font-size: 16px; line-height: 1; }
+
+    .r-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .r-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .r-right { text-align: right; }
+
+    .r-time {
+      font-size: 12px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      color: #ccc;
+    }
+
+    .r-done {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .r-sprint {
+      font-size: 9px;
+      color: var(--red);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    @media (max-width: 460px) {
+      .cd-num { font-size: 28px; }
+      .cd-block { min-width: 44px; }
+      .next-name { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hd">
+      <div class="hd-bar"></div>
+      <div>
+        <h1>Formula 1 &middot; 2025</h1>
+        <p id="tz-lbl">Loading times&hellip;</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="next-wrap">
+    <div class="next-card" id="next-card">
+      <div class="next-label">Next Race</div>
+      <div class="next-flag" id="nf"></div>
+      <div class="next-name" id="nn"></div>
+      <div class="next-meta" id="nm"></div>
+      <div class="next-time" id="nt"></div>
+      <div class="cd">
+        <div class="cd-block"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">Days</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">Hrs</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl">Min</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl">Sec</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sched">
+    <div class="sec-hd">2025 Season &mdash; 24 Rounds</div>
+    <div class="race-list" id="race-list"></div>
+  </div>
+
+</div>
+<script>
+const RACES = [
+  { r:1,  name:'Australian Grand Prix',    circuit:'Albert Park Circuit',                  country:'Australia',             flag:'\u{1F1E6}\u{1F1FA}', date:'2025-03-16T05:00:00Z', sprint:false },
+  { r:2,  name:'Chinese Grand Prix',        circuit:'Shanghai International Circuit',        country:'China',                 flag:'\u{1F1E8}\u{1F1F3}', date:'2025-03-23T07:00:00Z', sprint:true  },
+  { r:3,  name:'Japanese Grand Prix',       circuit:'Suzuka Circuit',                        country:'Japan',                 flag:'\u{1F1EF}\u{1F1F5}', date:'2025-04-06T05:00:00Z', sprint:false },
+  { r:4,  name:'Bahrain Grand Prix',        circuit:'Bahrain International Circuit',         country:'Bahrain',               flag:'\u{1F1E7}\u{1F1ED}', date:'2025-04-13T15:00:00Z', sprint:false },
+  { r:5,  name:'Saudi Arabian Grand Prix',  circuit:'Jeddah Corniche Circuit',               country:'Saudi Arabia',          flag:'\u{1F1F8}\u{1F1E6}', date:'2025-04-20T17:00:00Z', sprint:false },
+  { r:6,  name:'Miami Grand Prix',          circuit:'Miami International Autodrome',         country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-05-04T20:00:00Z', sprint:true  },
+  { r:7,  name:'Emilia Romagna Grand Prix', circuit:'Autodromo Enzo e Dino Ferrari',         country:'Italy',                 flag:'\u{1F1EE}\u{1F1F9}', date:'2025-05-18T13:00:00Z', sprint:false },
+  { r:8,  name:'Monaco Grand Prix',         circuit:'Circuit de Monaco',                     country:'Monaco',                flag:'\u{1F1F2}\u{1F1E8}', date:'2025-05-25T13:00:00Z', sprint:false },
+  { r:9,  name:'Spanish Grand Prix',        circuit:'Circuit de Barcelona-Catalunya',        country:'Spain',                 flag:'\u{1F1EA}\u{1F1F8}', date:'2025-06-01T13:00:00Z', sprint:false },
+  { r:10, name:'Canadian Grand Prix',       circuit:'Circuit Gilles Villeneuve',             country:'Canada',                flag:'\u{1F1E8}\u{1F1E6}', date:'2025-06-15T18:00:00Z', sprint:false },
+  { r:11, name:'Austrian Grand Prix',       circuit:'Red Bull Ring',                         country:'Austria',               flag:'\u{1F1E6}\u{1F1F9}', date:'2025-06-29T13:00:00Z', sprint:false },
+  { r:12, name:'British Grand Prix',        circuit:'Silverstone Circuit',                   country:'United Kingdom',        flag:'\u{1F1EC}\u{1F1E7}', date:'2025-07-06T14:00:00Z', sprint:false },
+  { r:13, name:'Belgian Grand Prix',        circuit:'Circuit de Spa-Francorchamps',          country:'Belgium',               flag:'\u{1F1E7}\u{1F1EA}', date:'2025-07-27T13:00:00Z', sprint:true  },
+  { r:14, name:'Hungarian Grand Prix',      circuit:'Hungaroring',                           country:'Hungary',               flag:'\u{1F1ED}\u{1F1FA}', date:'2025-08-03T13:00:00Z', sprint:false },
+  { r:15, name:'Dutch Grand Prix',          circuit:'Circuit Zandvoort',                     country:'Netherlands',           flag:'\u{1F1F3}\u{1F1F1}', date:'2025-08-31T13:00:00Z', sprint:false },
+  { r:16, name:'Italian Grand Prix',        circuit:'Autodromo Nazionale Monza',             country:'Italy',                 flag:'\u{1F1EE}\u{1F1F9}', date:'2025-09-07T13:00:00Z', sprint:false },
+  { r:17, name:'Azerbaijan Grand Prix',     circuit:'Baku City Circuit',                     country:'Azerbaijan',            flag:'\u{1F1E6}\u{1F1FF}', date:'2025-09-21T11:00:00Z', sprint:false },
+  { r:18, name:'Singapore Grand Prix',      circuit:'Marina Bay Street Circuit',             country:'Singapore',             flag:'\u{1F1F8}\u{1F1EC}', date:'2025-10-05T08:00:00Z', sprint:false },
+  { r:19, name:'United States Grand Prix',  circuit:'Circuit of the Americas',               country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-10-19T19:00:00Z', sprint:true  },
+  { r:20, name:'Mexico City Grand Prix',    circuit:'Autódromo Hermanos Rodríguez',          country:'Mexico',                flag:'\u{1F1F2}\u{1F1FD}', date:'2025-10-26T20:00:00Z', sprint:false },
+  { r:21, name:'São Paulo Grand Prix',      circuit:'Autódromo José Carlos Pace',            country:'Brazil',                flag:'\u{1F1E7}\u{1F1F7}', date:'2025-11-09T17:00:00Z', sprint:true  },
+  { r:22, name:'Las Vegas Grand Prix',      circuit:'Las Vegas Strip Circuit',               country:'United States',         flag:'\u{1F1FA}\u{1F1F8}', date:'2025-11-22T06:00:00Z', sprint:false },
+  { r:23, name:'Qatar Grand Prix',          circuit:'Lusail International Circuit',          country:'Qatar',                 flag:'\u{1F1F6}\u{1F1E6}', date:'2025-11-30T13:00:00Z', sprint:true  },
+  { r:24, name:'Abu Dhabi Grand Prix',      circuit:'Yas Marina Circuit',                    country:'United Arab Emirates',  flag:'\u{1F1E6}\u{1F1EA}', date:'2025-12-07T13:00:00Z', sprint:false },
+];
+
+const now = new Date();
+
+// Timezone label
+const off = -now.getTimezoneOffset();
+const sign = off >= 0 ? '+' : '-';
+const hh = String(Math.floor(Math.abs(off)/60)).padStart(2,'0');
+const mm = String(Math.abs(off)%60).padStart(2,'0');
+document.getElementById('tz-lbl').textContent = `All times in your local timezone · UTC${sign}${hh}:${mm}`;
+
+function fmtDate(iso) {
+  return new Date(iso).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+}
+function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function fmtFull(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'}) + ' · ' +
+         d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+const nextIdx = RACES.findIndex(race => new Date(race.date) > now);
+const next = nextIdx >= 0 ? RACES[nextIdx] : null;
+
+if (next) {
+  document.getElementById('nf').textContent = next.flag;
+  document.getElementById('nn').textContent = next.name;
+  document.getElementById('nm').textContent = `Round ${next.r} · ${next.circuit}`;
+  document.getElementById('nt').textContent = fmtFull(next.date);
+
+  function tick() {
+    const diff = new Date(next.date) - new Date();
+    if (diff <= 0) return;
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    const p = n => String(n).padStart(2,'0');
+    document.getElementById('cd-d').textContent = p(d);
+    document.getElementById('cd-h').textContent = p(h);
+    document.getElementById('cd-m').textContent = p(m);
+    document.getElementById('cd-s').textContent = p(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+} else {
+  document.getElementById('next-card').style.display = 'none';
+}
+
+const list = document.getElementById('race-list');
+RACES.forEach((race, i) => {
+  const past = new Date(race.date) < now;
+  const isNext = i === nextIdx;
+  const row = document.createElement('div');
+  row.className = 'row' + (past ? ' past' : '') + (isNext ? ' is-next' : '');
+  row.innerHTML = `
+    <div class="r-num">${race.r}</div>
+    <div class="r-flag">${race.flag}</div>
+    <div>
+      <div class="r-name">${race.name.replace(' Grand Prix',' GP')}</div>
+      <div class="r-date">${fmtDate(race.date)}</div>
+    </div>
+    <div class="r-right">
+      ${past
+        ? '<div class="r-done">Finished</div>'
+        : `<div class="r-time">${fmtTime(race.date)}</div>${race.sprint ? '<div class="r-sprint">Sprint</div>' : ''}`
+      }
+    </div>
+  `;
+  list.appendChild(row);
+});
+</script>
+</body>
+</html>
